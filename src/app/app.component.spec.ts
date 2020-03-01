@@ -1,35 +1,43 @@
 import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { FormsModule } from '@angular/forms';
+import { Task } from './task';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        FormsModule
       ],
       declarations: [
         AppComponent
       ],
-    }).compileComponents();
+    });
+  });
+
+  it(`should have a newTask task`, async(() => {
+    let fixture = TestBed.createComponent(AppComponent);
+    let app = fixture.debugElement.componentInstance;
+    expect(app.newTask instanceof Task).toBeTruthy()
   }));
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+  it('should create the app', async(() => {
+    let fixture = TestBed.createComponent(AppComponent);
+    let app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
-  });
+  }));
 
-  it(`should have as title 'task-list-frontend'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+  it(`should have as title 'task-list-frontend'`, async(() => {
+    let fixture = TestBed.createComponent(AppComponent);
+    let app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('task-list-frontend');
-  });
+  }));
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  it('should display "Tasks" in h1 tag', async(() => {
+    let fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('task-list-frontend app is running!');
-  });
+    let compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain('Tasks');
+  }));
+
 });
