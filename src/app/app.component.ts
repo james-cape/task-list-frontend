@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { TaskDataService } from './task-data.service';
 import { Task } from './task';
 
@@ -9,27 +9,79 @@ import { Task } from './task';
   providers:[TaskDataService]
 })
 
-export class AppComponent {
-  title = 'task-list-frontend';
+export class AppComponent implements OnInit {
+  // title = 'task-list-frontend';
   newTask: Task = new Task();
 
-  constructor(private TaskDataService: TaskDataService) {
+  tasks: Task[] = [];
+
+  @Output()
+  add: EventEmitter<Task> = new EventEmitter();
+
+  constructor(
+    private taskDataService: TaskDataService
+  ) {
+  }
+
+  public ngOnInit() {
+    this.taskDataService
+      .getAllTasks()
+      .subscribe(
+        (tasks) => {
+          this.tasks = tasks;
+        }
+      );
   }
 
   addTask() {
-    this.TaskDataService.addTask(this.newTask);
+    this.add.emit(this.newTask);
     this.newTask = new Task();
   }
 
-  toggleTaskCompleted(task) {
-    this.TaskDataService.toggleTaskCompleted(task);
+  onAddTask(task) {
+    this.taskDataService
+      .addTask(task)
+      .subscribe(
+        (newTask) => {
+          this.tasks = this.tasks.concat(newTask);
+        }
+      );
   }
 
-  removeTask(task) {
-    this.TaskDataService.deleteTaskById(task.id);
+  onToggleTaskCompleted(task) {
+    this.taskDataService
+      .toggleTaskCompleted(task)
+      .subscribe(
+        (updatedTask) => {
+          task = updatedTask;
+        }
+      );
   }
 
-  get tasks() {
-    return this.TaskDataService.getAllTasks();
+  onRemoveTask(task) {
+    this.taskDataService
+      .deleteTaskById(task.id)
+      .subscribe(
+        (_) => {
+          this.tasks = this.tasks.filter((t) => t.id !== task.id);
+        }
+      );
   }
+
+  // addTask() {
+  //   this.TaskDataService.addTask(this.newTask);
+  //   this.newTask = new Task();
+  // }
+  //
+  // toggleTaskCompleted(task) {
+  //   this.TaskDataService.toggleTaskCompleted(task);
+  // }
+  //
+  // removeTask(task) {
+  //   this.TaskDataService.deleteTaskById(task.id);
+  // }
+  //
+  // get tasks() {
+  //   return this.TaskDataService.getAllTasks();
+  // }
 }

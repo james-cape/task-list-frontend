@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'https://task-list-backend-80224.herokuapp.com'
 };

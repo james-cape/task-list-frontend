@@ -1,61 +1,50 @@
-import {Injectable} from '@angular/core';
-import {Task} from './task';
+import { Injectable } from '@angular/core';
+import { Task } from './task';
+import { ApiService } from './api.service';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class TaskDataService {
 
-  // Placeholder for last id so we can simulate automatic incrementing of ids
-  lastId: number = 0;
-
-  // Placeholder for tasks
-  tasks: Task[] = [];
-
-  constructor() {}
-
-  // Simulate POST /tasks
-  addTask(task: Task): TaskDataService {
-    if (!task.id) {
-      task.id = ++this.lastId;
-    }
-    this.tasks.push(task);
-    return this;
+  constructor(
+    private api: ApiService
+  ) {
   }
 
-  // Simulate DELETE /tasks/:id
-  deleteTaskById(id: number): TaskDataService {
-    this.tasks = this.tasks
-      .filter(task => task.id !== id);
-    return this;
+  // Simulate POST /task
+  addTask(task: Task): Observable<Task> {
+    console.log('############');
+    console.log('############');
+    console.log(task);
+    console.log('############');
+    console.log('############');
+    return this.api.createTask(task);
   }
 
-  // Simulate PUT /tasks/:id
-  updateTaskById(id: number, values: Object = {}): Task {
-    let task = this.getTaskById(id);
-    if (!task) {
-      return null;
-    }
-    Object.assign(task, values);
-    return task;
+  // Simulate DELETE /task/:id
+  deleteTaskById(taskId: number): Observable<Task> {
+    return this.api.deleteTaskById(taskId);
+  }
+
+  // Simulate PUT /task/:id
+  updateTask(task: Task): Observable<Task> {
+    return this.api.updateTask(task);
   }
 
   // Simulate GET /tasks
-  getAllTasks(): Task[] {
-    return this.tasks;
+  getAllTasks(): Observable<Task[]> {
+    return this.api.getAllTasks();
   }
 
-  // Simulate GET /tasks/:id
-  getTaskById(id: number): Task {
-    return this.tasks
-      .filter(task => task.id === id)
-      .pop();
+  // Simulate GET /task/:id
+  getTaskById(taskId: number): Observable<Task> {
+    return this.api.getTaskById(taskId);
   }
 
-  // Toggle task completed
-  toggleTaskCompleted(task: Task){
-    let updatedTask = this.updateTaskById(task.id, {
-      completed: !task.completed
-    });
-    return updatedTask;
+  // Toggle completed
+  toggleTaskCompleted(task: Task) {
+    task.completed = !task.completed;
+    return this.api.updateTask(task);
   }
 
 }
