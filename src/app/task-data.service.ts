@@ -13,11 +13,6 @@ export class TaskDataService {
 
   // Simulate POST /task
   addTask(task: Task): Observable<Task> {
-    console.log('############');
-    console.log('############');
-    console.log(task);
-    console.log('############');
-    console.log('############');
     return this.api.createTask(task);
   }
 

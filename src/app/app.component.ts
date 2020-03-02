@@ -67,21 +67,4 @@ export class AppComponent implements OnInit {
         }
       );
   }
-
-  // addTask() {
-  //   this.TaskDataService.addTask(this.newTask);
-  //   this.newTask = new Task();
-  // }
-  //
-  // toggleTaskCompleted(task) {
-  //   this.TaskDataService.toggleTaskCompleted(task);
-  // }
-  //
-  // removeTask(task) {
-  //   this.TaskDataService.deleteTaskById(task.id);
-  // }
-  //
-  // get tasks() {
-  //   return this.TaskDataService.getAllTasks();
-  // }
 }

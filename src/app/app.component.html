@@ -9,7 +9,7 @@
         <div class="view">
           <input class="toggle" type="checkbox" (click)="onToggleTaskCompleted(task)" [checked]="task.completed">
           <label>{{task.description}}</label>
-          <button class="destroy" (click)="onRemoveTask(task)"></button>
+          <button class="destroy" (click)="onRemoveTask(task)">Remove</button>
         </div>
       </li>
     </ul>
